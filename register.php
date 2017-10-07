@@ -276,6 +276,8 @@ if(isset($_POST['subpf'])){
 	$N = 12;
 	$SKILLSET = "";
 	
+	$PID = time().rand(0,9999).rand(0,9999);
+	
 	
 		for($I = 1;$I<=$N;$I++){
 			$INDEX = "c".$I;
@@ -284,12 +286,28 @@ if(isset($_POST['subpf'])){
 
 
 		}
-	
+	session_start();
 	$eid = $_SESSION['eid'];
 	
-	$q = "INSERT INTO project VALUES ('".time().rand(0,9999).rand(0,9999)."', '$eid', '$title', '$descr', '$link', '$SKILLSET')";
+	$q = "INSERT INTO project VALUES ('$PID', '$eid', '$title', '$descr', '$link', '$SKILLSET')";
 	
 	$result = mysqli_query($dbc, $q);
+	
+	require_once("phpscripts.php");
+	
+    $arrSearch = explode(' ', $SKILLSET);
+    $query="SELECT * FROM users WHERE skillset LIKE '%$arrSearch[0]%' ".getKeywordsAsSql($arrSearch);
+	$result2 = mysqli_query($dbc,  $query);
+	while($data = mysqli_fetch_array($result2)){
+		$id = $data['eid'];
+		if($id == $eid){
+			continue;
+		}
+		
+		$sq = "INSERT INTO notification VALUES ('$PID', '$id', '0')";
+		$result = mysqli_query($dbc, $sq);
+	}
+	
 	
 	if($result){
 		
@@ -299,8 +317,9 @@ if(isset($_POST['subpf'])){
 				
 				echo "
 				<div class='miniwrap'>
-				<h2>Oops...</h2>
-				<p>There was an error connecting the server.<br>Please try again later</p>
+				<h2>The Project was declared.</h2>
+				<p>The people matching the skill set required for your project will be notified.</p>
+				
 				
 				</div>
 				

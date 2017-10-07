@@ -22,6 +22,27 @@ if(!isset($_SESSION['eid'])){
 require_once("header.php");
 	?>
 	
+
+<!-- THE TOOL BAR OR MENU BAR -->
+	
+	<div class='miniwrapper'>
+	<table>
+	<tr>
+	<td>My Projects </td>
+	<td><a href='home.php?q=sug'>Suggestions <?php require_once("phpscripts.php"); $n = getNoSuggestions(); if($n!=0){ echo "($n)" ;} ?> </a></td>
+	<td><a href='logout.php?q=yes'>Log Out</a></td>
+	</tr>	
+	</table>
+	
+	</div>
+	
+	
+<!-- THE TOOL BAR OR MENU BAR ENDS -->
+	
+<div class='miniwrapper'>
+	
+	
+</div>
 	
 <!-- CREATE A PROJECT -->
 	
@@ -30,7 +51,7 @@ require_once("header.php");
 	<h3>You can declare a new project here.</h3>
 	<h4>People meeting the criteria of defined skillset of<br>your project, will get a notification about your project.</h4>
 	
-	<form action='' method=''>
+	<form action='register.php' method='post'>
 		<input type='text' name='title' placeholder='Title' ><br>
 		<textarea name='descr' id='descr' >A brief description of your Project.</textarea><br>
 		<p>Any External link to the project ( If Any ) : </p>
