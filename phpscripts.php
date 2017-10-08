@@ -46,6 +46,33 @@ function getNoResponses(){
 	}
 }
 
+function totalResponses($id){
+	require("dbconnect.php");
+	$eid = $id;
+	$q = "SELECT * FROM response WHERE respid = '$eid' AND seen='1'";
+	require("dbconnect.php");
+	
+	$r = mysqli_query($dbc, $q);
+	
+	if($r){
+		return mysqli_affected_rows($dbc);
+	}
+}
+
+function totalProjects($id){
+	require("dbconnect.php");
+	$q = "SELECT * FROM project WHERE eid = '$id'";
+	require("dbconnect.php");
+	
+	$r = mysqli_query($dbc, $q);
+	
+	if($r){
+		return mysqli_affected_rows($dbc);
+	}
+}
+
+
+
 
 
 ?>

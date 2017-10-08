@@ -1,0 +1,9 @@
+Save this folder in your 'htdocs' folder.
+
+Create a database named 'collab' without the inverted commas.
+
+Create a user with username - "collab_user" and password - "98981234" and grant all permissions to it.
+
+Import the file "collab.sql" in your database to create the tables.
+
+The website is ready to be used.

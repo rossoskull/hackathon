@@ -24,7 +24,7 @@ if(isset($_GET['rid']) && isset($_GET['cid'])){
 	$r = mysqli_query($dbc, $q);
 	
 	if(mysqli_affected_rows($dbc)==0){
-		$q= "INSERT INTO response VALUES ('$pid','$cid','$id','0')";
+		$q= "INSERT INTO response VALUES ('$pid','$cid','$id','0','".time()."')";
 	
 		$r = mysqli_query($dbc, $q);
 	}
@@ -49,22 +49,7 @@ require_once("header.php");
 	?>
 	
 
-<!-- THE TOOL BAR OR MENU BAR -->
-	
-	<div class='miniwrapper'>
-	<table>
-	<tr>
-		<td><a href='home.php'>My Projects </a> </td>
-	<td><a href='home.php?q=sug'>Suggestions <?php require_once("phpscripts.php"); $n = getNoSuggestions(); if($n!=0){ echo "($n)" ;} ?> </a></td>
-	<td><a href='home.php?q=res'>Responses <?php require_once("phpscripts.php"); $n = getNoResponses(); if($n!=0){ echo "($n)" ;} ?> </a></td>
-	<td><a href='logout.php?q=yes'>Log Out</a></td>
-	</tr>	
-	</table>
-	
-	</div>
-	
-	
-<!-- THE TOOL BAR OR MENU BAR ENDS -->
+
 	
 <div class='miniwrapper'>
 	
@@ -81,10 +66,14 @@ require_once("header.php");
 		if($_GET['q']=='sug'){
 		require("dbconnect.php");
 		$eid = $_SESSION['eid'];
-		$q = "SELECT * FROM notification WHERE eid = '$eid'";
+		$q = "SELECT * FROM notification WHERE eid = '$eid' ORDER BY time DESC";
 		require_once("dbconnect.php");
 		$result = mysqli_query($dbc, $q);
-		
+		$n = mysqli_affected_rows($dbc);
+			
+		if($n == 0){
+			echo "<div class='miniwrapper'><h2>You have no suggestions :'(</h2></div>";
+		}
 		if($result){
 			while($data = mysqli_fetch_array($result)){
 				
@@ -128,18 +117,20 @@ require_once("header.php");
 				
 				<div class='$classname'>
 				<h2>$title</h2>
-				<h3>Created By <a href=''>$fname $lname</a></h3>
+				<h3>Created By <a href='profile.php?id=$creatorid'>$fname $lname</a></h3>
 				<p>$desc</p>";
 				
 				if($link!="") { echo "External Link to the project: <a href='http://$link'>Go</a>"; }				
 				
 				echo "
 				<br>
-				<a href='home.php?q=sug&rid=$pid&cid=$creatorid'>Interested in project</a>
+				<a href='home.php?q=sug&rid=$pid&cid=$creatorid' class='menu' width='200px'>Interested in project</a>
 				</div>
 				
 				<!-- DISPLAY SUGGESTIONS ENDS -->
 				";
+				
+				
 				
 				
 				
@@ -159,9 +150,12 @@ require_once("header.php");
 			
 			$eid = $_SESSION['eid'];
 			
-			$q = "SELECT * FROM response WHERE creatorid='$eid'";
+			$q = "SELECT * FROM response WHERE creatorid='$eid' ORDER BY time DESC";
 			
 			$r= mysqli_query($dbc, $q);
+			if(mysqli_affected_rows($dbc)==0){
+				echo "<div class='miniwrapper'><h2>No users have responded to your projects till now.</h2></div>";
+			}
 			
 			if($r){
 				while($data = mysqli_fetch_array($r)){
@@ -193,7 +187,7 @@ require_once("header.php");
 					
 					echo "
 					<div class='$classname'>
-					<p><a href='$rid'>$fnamer $lnamer</a> responded to your project titled '<b>$title</b>'</p>
+					<p><a href='profile.php?id=$rid'>$fnamer $lnamer</a> responded to your project titled '<b>$title</b>'</p>
 					
 					</div>
 					";
@@ -225,7 +219,7 @@ echo "
 	<h4>People meeting the criteria of defined skillset of<br>your project, will get a notification about your project.</h4>
 	
 	<form action='register.php' method='post'>
-		<input type='text' name='title' placeholder='Title' ><br>
+		<input type='text' name='title' placeholder='Title' id='title'><br>
 		<textarea name='descr' id='descr' >A brief description of your Project.</textarea><br>
 		<p>Any External link to the project ( If Any ) : </p>
 		<input type='text' name='link' id='link' placeholder='e.g. GitHub Repo Link' />
@@ -270,6 +264,15 @@ echo "
 				
 				echo "</div>";
 				
+			} 
+			
+			if(mysqli_affected_rows($dbc) == 0){
+				echo "
+				<div class='miniwrapper'>
+				<h2>You have created no projects.</h2>
+				<h3>You can get started above.</h3>
+				
+				";
 			}
 			
 		}

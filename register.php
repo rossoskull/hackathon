@@ -1,5 +1,9 @@
 <?php
 
+if(!isset($_POST['sublf']) && !isset($_POST['subrf']) && !isset($_POST['subpf'])){
+	header("Location: index.php");
+	exit();
+}
 
 /* LOGIN FORM SUBMIT SCRIPT */
 
@@ -34,7 +38,7 @@ if(isset($_POST['sublf'])){
                     require_once("header.php");
                     echo "<body>";                    
                     echo "
-                        <div class='miniwrap'>
+                        <div class='miniwrapper'>
                             Looks like we couldn't Log you in.<br>
                             The E-Mail ID or Password you entered are incorrect.<br>
                             <br>
@@ -139,7 +143,7 @@ if(isset($_POST['subrf'])){
 				require_once("header.php");
 				
 				echo "
-				<div class='miniwrap'>
+				<div class='miniwrapper'>
 				<h2>Congratulations!</h2>
 				<p>Your Account has been created with Collab.</p>
 				<p>You are just one step away from your Collab experience.</p>
@@ -153,7 +157,9 @@ if(isset($_POST['subrf'])){
 				
 				require_once("footer.php");
 				
-				session_start();
+				if(!isset($_SESSION['eid'])){
+					session_start();
+				}
 				
 				$_SESSION['fname']= $fname;
 				$_SESSION['lname']= $lname;
@@ -172,7 +178,7 @@ if(isset($_POST['subrf'])){
 				require_once("header.php");
 				
 				echo "
-				<div class='miniwrap'>
+				<div class='miniwrapper'>
 				<h2>Oops...</h2>
 				<p>There was an error connecting the server.<br>Please try again later</p>
 				
@@ -199,7 +205,7 @@ if(isset($_POST['subrf'])){
 				require_once("header.php");
 				
 				echo "
-				<div class='miniwrap'>
+				<div class='miniwrapper'>
 				<h2>Re-enter the E-Mail ID</h2>
 				<p>Looks like the E-Mail ID you entered is already in use.<br>Please enter a new E-Mail ID.</p>
 				
@@ -238,7 +244,7 @@ if(isset($_POST['subrf'])){
 				require_once("header.php");
 				
 				echo "
-				<div class='miniwrap'>
+				<div class='miniwrapper'>
 				<h2>Oops...</h2>
 				<p>There was an error connecting the server.<br>Please try again later</p>
 				
@@ -304,7 +310,7 @@ if(isset($_POST['subpf'])){
 			continue;
 		}
 		
-		$sq = "INSERT INTO notification VALUES ('$PID', '$id', '0')";
+		$sq = "INSERT INTO notification VALUES ('$PID', '$id', '0','".time()."')";
 		$result = mysqli_query($dbc, $sq);
 	}
 	
@@ -316,10 +322,11 @@ if(isset($_POST['subpf'])){
 				require_once("header.php");
 				
 				echo "
-				<div class='miniwrap'>
+				<div class='miniwrapper'>
 				<h2>The Project was declared.</h2>
 				<p>The people matching the skill set required for your project will be notified.</p>
 				
+				<a href='home.php' class='menu'>Go to HomePage</a>
 				
 				</div>
 				

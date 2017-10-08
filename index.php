@@ -1,10 +1,15 @@
-
+<?php
+session_start();
+if(isset($_SESSION['eid'])){
+header("Location: home.php");
+	exit();
+} ?>
 
 
 <html>
 	
 <head>
-	
+	<script src="script.js" type='text/javascript' ></script>
 	
 </head>
 
@@ -12,18 +17,18 @@
 <body>
 	
 <!-- Header FILE -->
-	
+	<?php require('header.php'); ?>
 	
 	<!-- LOGIN FORM -->
-	<div class = 'miniwrap'>
-	<form action='register.php' method="post"  >
-		<h2>Log In</h2>
+	<div class = 'miniwrapper'>
+	<form action='register.php' method="post" onsubmit="return validateuform();" >
+		<div class='centrewrap'><h2>Log In</h2>
 		
-		<input type="email" placeholder="E-Mail ID" id='eid' name='eid' />
+		<input type="email" placeholder="E-Mail ID" id='leid' name='eid' />
 		<br>
-			<input type="password" placeholder="Password" id='pass' name='pass' />
+			<input type="password" placeholder="Password" id='lpass' name='pass' />
 		<br>
-		<input type="submit" value="Log In" name='sublf' id='sublf' >
+		<input type="submit" value="Log In" name='sublf' id='sublf' ></div>
 		
 
 		
@@ -33,9 +38,9 @@
 	
 	<!-- REGISTRATION FORM -->
 	
-	<div class='miniwrap'>
+	<div class='miniwrapper'>
 		<h2>Register</h2>
-		<form action='register.php' method="post"   >
+		<form action='register.php' method="post"  onSubmit="return validateform()" >
 		 <h3>Personal Details:</h3>
 	 		<input type='text' name='fname' id='fname' placeholder="First Name" ><br>
 	 		<input type='text' name='lname' id='lname' placeholder="Last Name" ><br>
