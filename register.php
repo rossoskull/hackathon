@@ -145,7 +145,7 @@ if(isset($_POST['subrf'])){
 				<p>You are just one step away from your Collab experience.</p>
 				<p>Get started by clicking the following button!.</p>
 				
-				<a href='' class='greenbutton'> Go! </a>
+				<a href='home.php' class='greenbutton'> Go! </a>
 				
 				</div>
 				

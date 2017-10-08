@@ -19,7 +19,7 @@ function getKeywordsAsSql($array){
 
 function getNoSuggestions(){
 	$eid = $_SESSION['eid'];
-	
+	require("dbconnect.php");
 	$q = "SELECT * FROM notification WHERE eid = '$eid' AND seen='0'";
 	
 	require_once("dbconnect.php");
@@ -31,6 +31,19 @@ function getNoSuggestions(){
 	}
 	
 	
+}
+
+function getNoResponses(){
+	require("dbconnect.php");
+	$eid = $_SESSION['eid'];
+	$q = "SELECT * FROM response WHERE creatorid = '$eid' AND seen='0'";
+	require("dbconnect.php");
+	
+	$r = mysqli_query($dbc, $q);
+	
+	if($r){
+		return mysqli_affected_rows($dbc);
+	}
 }
 
 
